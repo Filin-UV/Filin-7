@@ -5,6 +5,7 @@ import subprocess
 import sys
 from sys import platform
 import tkinter
+import tkinter.messagebox
 from tkinter.ttk import Frame, Label, Style
 import PIL.Image, PIL.ImageTk
 import time
@@ -78,9 +79,14 @@ class App:
         self.PeripheryInit()
         self.WindowConstruct(window, window_title)
         self.detectActivePort()
-        self.video_source1 = self.available_ports[0]
-        self.video_source2 = self.available_ports[1]
-        
+        try:
+            self.video_source1 = self.available_ports[0]
+        except IndexError as error:
+            tkinter.messagebox.showerror(title = "Error", message = "Cam1 is not available \n Please contact the manufacturer")
+        try:
+            self.video_source2 = self.available_ports[1]
+        except IndexError as error:
+            tkinter.messagebox.showerror(title = "Error", message = "Cam2 is not available \n Please contact the manufacturer")
         self.vid = MyVideoCapture(self.video_source1,self.video_source2)
         
         self.delay = 1
@@ -384,7 +390,7 @@ class MyVideoCapture:
         self.vid2 = cv2.VideoCapture(video_source2)
         if not self.vid1.isOpened():
             raise ValueError("Cam1 is not available")
-        if not self.vid1.isOpened():
+        if not self.vid2.isOpened():
             raise ValueError("Cam2 is not available")
         self.width1 = self.vid1.get(cv2.CAP_PROP_FRAME_WIDTH)
         self.height1 = self.vid1.get(cv2.CAP_PROP_FRAME_HEIGHT)
