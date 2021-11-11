@@ -319,7 +319,8 @@ class App:
                 pass
             elif cursor_pos == 8:
                 self.window.destroy()
-                subprocess.run("/home/pi/Filin7-RPi/updatesoft.sh")
+                subprocess.Popen("/home/pi/Filin7-RPi/updatesoft.sh")
+                os._exit
                 pass
             elif cursor_pos == 9:
                 settings_screen = False
