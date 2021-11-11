@@ -1,3 +1,4 @@
+
 import cv2
 import numpy
 import time
@@ -53,6 +54,7 @@ time_zones = cycle([0,1,2,3,4,5,6,7,8,9,10,11,12,-12,-11,-10,-9,-8,-7,-6,-5,-4,-
 settings_screen = False
 record_flag = False
 charger = False
+updating_flag = False
 
 
 
@@ -199,6 +201,7 @@ class App:
         global tz
         global out
         global record_flag
+        global updating_flag
         
         self.bat_ind = PIL.ImageTk.PhotoImage(image=PIL.Image.open(bat_image))
         self.bat_canvas.create_image(0,0,image=self.bat_ind,anchor=tkinter.NW)
@@ -315,6 +318,8 @@ class App:
                 print(dictionary)
                 pass
             elif cursor_pos == 8:
+                self.window.destroy()
+                subprocess.run("/home/pi/Filin7-RPi/updatesoft.sh")
                 pass
             elif cursor_pos == 9:
                 settings_screen = False
@@ -464,6 +469,7 @@ def charger_event(channel):
     else:                  # if port 6 != 1
         charger = True
         print("---AC Power OK,Power Adapter OK---")
+
 
 config = configparser.ConfigParser()
 config.read('config.ini')
